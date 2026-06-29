@@ -7,14 +7,14 @@ body {
 
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 
   color: white;
 }
 
 /* MAIN APP */
 .app {
-  width: 420px;
+  width: 800px;
 
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
@@ -22,7 +22,11 @@ body {
   border-radius: 20px;
   padding: 20px;
 
+  margin-top: 20px;
+
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+
+  min-height: 500px; /* ✅ щоб не "стрибало" */
 }
 
 /* INPUT */
@@ -63,6 +67,9 @@ ul {
   list-style: none;
   padding: 0;
   margin-top: 20px;
+
+  max-height: 400px;   /* ✅ фіксує висоту */
+  overflow-y: auto;    /* ✅ скрол замість росту сторінки */
 }
 
 /* ========================= */
