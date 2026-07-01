@@ -9,7 +9,6 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null)
   const [todos, setTodos] = useState([])
 
-  // 🔹 завантаження користувача
   useEffect(() => {
     const savedUser = localStorage.getItem('currentUser')
 
@@ -20,14 +19,12 @@ function App() {
     }
   }, [])
 
-  // 🔹 збереження задач
   useEffect(() => {
     if (currentUser) {
       saveTodos(currentUser.username, todos)
     }
-  }, [todos])
+  }, [currentUser, todos])
 
-  // 🔐 login
   const handleLogin = () => {
     if (!username.trim()) return
 
@@ -40,25 +37,22 @@ function App() {
     setUsername('')
   }
 
-  // 🚪 logout
   const logout = () => {
     localStorage.removeItem('currentUser')
     setCurrentUser(null)
     setTodos([])
   }
 
-  // ➕ add todo
-  const addTodo = (text) => {
-    setTodos([
-      ...todos,
-      { id: Date.now(), text, done: false }
+  const addTodo = (text, dueDate) => {
+    setTodos(prev => [
+      ...prev,
+      { id: Date.now(), text, done: false, dueDate: dueDate || null }
     ])
   }
 
-  // ✔ toggle done
   const toggleTodo = (id) => {
-    setTodos(
-      todos.map(todo =>
+    setTodos(prev =>
+      prev.map(todo =>
         todo.id === id
           ? { ...todo, done: !todo.done }
           : todo
@@ -66,43 +60,45 @@ function App() {
     )
   }
 
-  // ❌ delete todo
   const deleteTodo = (id) => {
-    setTodos(todos.filter(todo => todo.id !== id))
+    setTodos(prev => prev.filter(todo => todo.id !== id))
   }
 
-  // ❗ якщо не залогінений
   if (!currentUser) {
     return (
-      <div className="app">
-        <h2>Вхід</h2>
+      <div className="app authCard">
+        <h2>Ласкаво просимо</h2>
+        <p className="subtleText">Увійди, щоб керувати своїм особистим планером</p>
 
         <input
+          className="todoInput"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Введи ім'я"
         />
 
-        <button onClick={handleLogin}>
+        <button className="primaryBtn" onClick={handleLogin}>
           Увійти
         </button>
       </div>
     )
   }
 
-  // 🟢 правильний порядок без sort (без стрибків)
   const activeTodos = todos.filter(t => !t.done)
   const doneTodos = todos.filter(t => t.done)
 
   return (
     <div className="app">
-
-      <h1>Todo List</h1>
-      <p>Користувач: {currentUser.username}</p>
-
-      <button onClick={logout}>
-        Вийти
-      </button>
+      <div className="appHeader">
+        <div>
+          <p className="eyebrow">Преміальний планер</p>
+          <h1>Todo Luxe</h1>
+          <p className="subtleText">Користувач: {currentUser.username}</p>
+        </div>
+        <button className="ghostBtn" onClick={logout}>
+          Вийти
+        </button>
+      </div>
 
       <TodoForm addTodo={addTodo} />
 
@@ -111,7 +107,6 @@ function App() {
         toggleTodo={toggleTodo}
         deleteTodo={deleteTodo}
       />
-
     </div>
   )
 }

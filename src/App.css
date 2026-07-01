@@ -1,178 +1,332 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-
-  background: linear-gradient(135deg, #2b1055, #5a189a, #ff9e7d);
+  font-family: 'Archivo Black', 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #170b2e, #5a189a 45%, #ff9e7d);
   min-height: 100vh;
-
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-
-  color: white;
+  align-items: center;
+  color: #fdf4ff;
+  overflow-x: hidden;
 }
 
-/* MAIN APP */
+#root {
+  width: 100%;
+}
+
 .app {
-  width: 800px;
+  width: min(1080px, calc(100vw - 36px));
+  max-width: 1080px;
+  margin-left: 20px;
+  background: linear-gradient(145deg, rgba(16, 10, 32, 0.95), rgba(58, 14, 110, 0.88));
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 48px);
+}
 
+.authCard {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.appHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 0.72rem;
+  color: #ffbe9d;
+}
+
+h1, h2 {
+  margin: 0;
+  font-family: 'Archivo Black', 'Segoe UI', Arial, sans-serif;
+  font-weight: 700;
+}
+
+.subtleText {
+  margin: 6px 0 0;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.todoForm {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr auto;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 18px;
   background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-
-  border-radius: 20px;
-  padding: 20px;
-
-  margin-top: 20px;
-
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-
-  min-height: 500px; /* ✅ щоб не "стрибало" */
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  margin-bottom: 16px;
 }
 
-/* INPUT */
-input {
-  width: 70%;
-  padding: 10px;
-
-  border: none;
-  border-radius: 10px;
-
+.todoInput,
+.todoDateInput {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
   outline: none;
+  font-size: 15px;
 }
 
-/* BUTTON */
-button {
-  padding: 10px 12px;
-  margin-left: 8px;
+.todoInput::placeholder {
+  color: rgba(255, 255, 255, 0.58);
+}
 
+.primaryBtn,
+.ghostBtn {
+  padding: 12px 16px;
   border: none;
-  border-radius: 10px;
-
+  border-radius: 12px;
   cursor: pointer;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
 
+.primaryBtn {
   background: linear-gradient(90deg, #9d4edd, #ff9e7d);
   color: white;
-
-  font-weight: bold;
-  transition: 0.3s;
+  box-shadow: 0 10px 24px rgba(157, 78, 221, 0.25);
 }
 
-button:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
+.ghostBtn {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
 }
 
-/* LIST */
-ul {
+.primaryBtn:hover,
+.ghostBtn:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+.todoListScroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.32) transparent;
+}
+
+.todoList {
   list-style: none;
   padding: 0;
-  margin-top: 20px;
-
-  max-height: 400px;   /* ✅ фіксує висоту */
-  overflow-y: auto;    /* ✅ скрол замість росту сторінки */
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-/* ========================= */
-/* TODO ITEM */
-/* ========================= */
+.todoListItem {
+  list-style: none;
+}
 
 .todoItem {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-
-  gap: 10px;
-
-  padding: 12px;
-  margin-bottom: 10px;
-
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-
-  transition: all 0.4s ease; /* 🔥 плавність */
-  will-change: transform;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px 18px;
+  margin-left: 4px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.08));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .todoItem:hover {
+  transform: translateY(-1px);
   background: rgba(255, 255, 255, 0.18);
 }
 
-/* LEFT SIDE */
+.todoItem.done {
+  opacity: 0.8;
+}
+
 .leftPart {
   display: flex;
-  align-items: center;
-  gap: 10px;
-
+  align-items: flex-start;
+  gap: 12px;
   flex: 1;
   min-width: 0;
 }
 
-/* TEXT */
+.taskContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
 .text {
   font-size: 16px;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  transition: all 0.3s ease;
+  line-height: 1.4;
+  color: #fff;
+  word-break: break-word;
+  font-family: 'Archivo Black', 'Segoe UI', Arial, sans-serif;
+  font-weight: 700;
 }
 
 .text.done {
   text-decoration: line-through;
-  opacity: 0.5;
-  color: #ffd6ff;
+  color: #f7d7ff;
 }
 
-/* DELETE BUTTON */
+.taskMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.metaBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fde9ff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.metaBadge.accent {
+  background: rgba(255, 158, 125, 0.2);
+  color: #ffe7db;
+}
+
+.metaBadge.overdue {
+  background: rgba(255, 116, 140, 0.2);
+  color: #ffdfe7;
+}
+
+.overdueNotice {
+  display: inline-block;
+  margin-top: 2px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 116, 140, 0.16);
+  color: #fff1f3;
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.metaBadge.completed {
+  background: rgba(157, 78, 221, 0.2);
+  color: #e8d6ff;
+}
+
 .deleteBtn {
   flex-shrink: 0;
-
   background: transparent;
   border: none;
-
   cursor: pointer;
-
-  font-size: 16px;
-  color: #ff9aa2;
-
-  transition: 0.2s;
+  font-size: 18px;
+  color: #ffb1bf;
+  padding: 4px;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .deleteBtn:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
   color: white;
 }
 
-/* ========================= */
-/* CHECKBOX (ROUND) */
-/* ========================= */
-
 .checkbox {
-  width: 18px;
-  height: 18px;
-
+  width: 20px;
+  height: 20px;
   appearance: none;
   -webkit-appearance: none;
-
-  border: 2px solid #9d4edd;
+  border: 2px solid #ff9e7d;
   border-radius: 50%;
-
   cursor: pointer;
-
   display: grid;
   place-content: center;
-
   transition: 0.2s;
+  margin-top: 2px;
 }
 
 .checkbox:checked {
-  background: #9d4edd;
-  border-color: #9d4edd;
+  background: #ff9e7d;
+  border-color: #ff9e7d;
 }
 
 .checkbox:checked::before {
   content: "✔";
   font-size: 12px;
   color: white;
+}
+
+@media (max-width: 720px) {
+  .app {
+    width: min(100vw - 20px, 1080px);
+    padding: 16px;
+    margin: 10px 0;
+  }
+
+  .appHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .todoForm {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primaryBtn,
+  .ghostBtn {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .todoItem {
+    padding: 14px;
+    margin-left: 0;
+  }
+
+  .leftPart {
+    gap: 10px;
+  }
+
+  .text {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    width: calc(100vw - 12px);
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .todoInput,
+  .todoDateInput {
+    font-size: 14px;
+  }
+
+  .taskMeta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
