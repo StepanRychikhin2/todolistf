@@ -1,332 +1,207 @@
 body {
-  margin: 0;
-  font-family: 'Archivo Black', 'Segoe UI', Arial, sans-serif;
-  background: linear-gradient(135deg, #170b2e, #5a189a 45%, #ff9e7d);
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fdf4ff;
-  overflow-x: hidden;
+  margin: 0;
+  color: #20231f;
+  background: #f7f8f5;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-#root {
-  width: 100%;
-}
+#root { min-height: 100vh; }
 
 .app {
-  width: min(1080px, calc(100vw - 36px));
-  max-width: 1080px;
-  margin-left: 20px;
-  background: linear-gradient(145deg, rgba(16, 10, 32, 0.95), rgba(58, 14, 110, 0.88));
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 24px;
-  padding: 24px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+  width: min(100%, 1120px);
+  min-height: 100vh;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  max-height: calc(100vh - 48px);
-}
-
-.authCard {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  align-items: flex-start;
+  margin: 0 auto;
+  padding: clamp(28px, 7vw, 80px) clamp(20px, 7vw, 88px);
 }
 
 .appHeader {
   display: flex;
+  align-items: flex-end;
   justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 18px;
+  gap: 24px;
+  margin-bottom: 46px;
 }
 
 .eyebrow {
-  margin: 0 0 4px;
+  margin: 0 0 12px;
+  color: #76816f;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .13em;
   text-transform: uppercase;
-  letter-spacing: 0.24em;
-  font-size: 0.72rem;
-  color: #ffbe9d;
 }
 
-h1, h2 {
-  margin: 0;
-  font-family: 'Archivo Black', 'Segoe UI', Arial, sans-serif;
-  font-weight: 700;
+h1, h2 { margin: 0; }
+
+h1 {
+  color: #252a23;
+  font-size: clamp(36px, 6vw, 58px);
+  line-height: 1.08;
+  letter-spacing: -.055em;
 }
+
+h1 span { color: #72936a; }
 
 .subtleText {
-  margin: 6px 0 0;
-  color: rgba(255, 255, 255, 0.72);
-}
-
-.todoForm {
-  display: grid;
-  grid-template-columns: 1.4fr 0.9fr auto;
-  gap: 12px;
-  padding: 14px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  margin-bottom: 16px;
-}
-
-.todoInput,
-.todoDateInput {
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.12);
-  color: white;
-  outline: none;
+  margin: 12px 0 0;
+  color: #858a81;
   font-size: 15px;
 }
 
-.todoInput::placeholder {
-  color: rgba(255, 255, 255, 0.58);
+.taskCount {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+  padding: 12px 16px;
+  border: 1px solid #e6e9e2;
+  border-radius: 999px;
+  color: #777e72;
+  background: #fff;
+  font-size: 13px;
 }
 
-.primaryBtn,
-.ghostBtn {
-  padding: 12px 16px;
-  border: none;
+.taskCount strong { color: #526a4d; font-size: 18px; }
+.content { width: 100%; }
+
+.todoForm {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(190px, .5fr) auto;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.todoInput, .todoDateInput {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 54px;
+  padding: 0 16px;
+  border: 1px solid #e1e5dc;
+  border-radius: 12px;
+  outline: none;
+  color: #2b3028;
+  background: #fff;
+  font: inherit;
+  font-size: 14px;
+  transition: border-color .18s, box-shadow .18s;
+}
+
+.todoInput::placeholder { color: #a0a59b; }
+.todoInput:focus, .todoDateInput:focus { border-color: #829b79; box-shadow: 0 0 0 3px #829b791c; }
+
+.primaryBtn, .ghostBtn {
+  min-height: 54px;
+  padding: 0 23px;
+  border: 0;
   border-radius: 12px;
   cursor: pointer;
+  font: inherit;
+  font-size: 14px;
   font-weight: 700;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  transition: background .18s, transform .18s;
 }
 
-.primaryBtn {
-  background: linear-gradient(90deg, #9d4edd, #ff9e7d);
-  color: white;
-  box-shadow: 0 10px 24px rgba(157, 78, 221, 0.25);
-}
+.primaryBtn { color: #fff; background: #607b58; }
+.primaryBtn:hover { background: #4f6948; transform: translateY(-1px); }
 
-.ghostBtn {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
-}
-
-.primaryBtn:hover,
-.ghostBtn:hover {
-  transform: translateY(-1px);
-  opacity: 0.95;
-}
-
-.todoListScroll {
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 6px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.32) transparent;
-}
-
-.todoList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.listHeading {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 4px 0 14px;
 }
 
-.todoListItem {
-  list-style: none;
-}
+.listHeading h2 { font-size: 16px; }
+.listHeading span { color: #92978e; font-size: 13px; }
+
+.todoListScroll { max-height: calc(100vh - 310px); overflow-y: auto; scrollbar-width: thin; }
+.todoList { display: flex; flex-direction: column; gap: 9px; margin: 0; padding: 0; list-style: none; }
+.todoListItem { list-style: none; }
 
 .todoItem {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-  width: 100%;
+  gap: 14px;
   box-sizing: border-box;
-  padding: 16px 18px;
-  margin-left: 4px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.08));
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
-  transition: transform 0.2s ease, background 0.2s ease;
+  width: 100%;
+  min-height: 66px;
+  padding: 14px 16px;
+  border: 1px solid #e9ebe6;
+  border-radius: 12px;
+  background: #fff;
+  transition: border-color .18s, box-shadow .18s;
 }
 
-.todoItem:hover {
-  transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.18);
-}
-
-.todoItem.done {
-  opacity: 0.8;
-}
-
-.leftPart {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  flex: 1;
-  min-width: 0;
-}
-
-.taskContent {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-}
-
-.text {
-  font-size: 16px;
-  line-height: 1.4;
-  color: #fff;
-  word-break: break-word;
-  font-family: 'Archivo Black', 'Segoe UI', Arial, sans-serif;
-  font-weight: 700;
-}
-
-.text.done {
-  text-decoration: line-through;
-  color: #f7d7ff;
-}
-
-.taskMeta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
+.todoItem:hover { border-color: #d5ddcf; box-shadow: 0 5px 18px #27351c0a; }
+.todoItem.done { opacity: .68; }
+.leftPart { display: flex; align-items: flex-start; gap: 13px; flex: 1; min-width: 0; }
+.taskContent { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.text { color: #30352d; font-size: 15px; line-height: 1.45; word-break: break-word; }
+.text.done { color: #858a81; text-decoration: line-through; }
+.taskMeta { display: flex; flex-wrap: wrap; gap: 7px; }
 
 .metaBadge {
   display: inline-flex;
   align-items: center;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
-  color: #fde9ff;
-  font-size: 12px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  color: #737a6e;
+  background: #f1f3ee;
+  font-size: 11px;
   font-weight: 600;
 }
 
-.metaBadge.accent {
-  background: rgba(255, 158, 125, 0.2);
-  color: #ffe7db;
-}
-
-.metaBadge.overdue {
-  background: rgba(255, 116, 140, 0.2);
-  color: #ffdfe7;
-}
-
-.overdueNotice {
-  display: inline-block;
-  margin-top: 2px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  background: rgba(255, 116, 140, 0.16);
-  color: #fff1f3;
-  font-weight: 800;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-}
-
-.metaBadge.completed {
-  background: rgba(157, 78, 221, 0.2);
-  color: #e8d6ff;
-}
+.metaBadge.accent { color: #607b58; background: #edf3e9; }
+.metaBadge.overdue { color: #a4514a; background: #fbefed; }
+.metaBadge.completed { color: #607b58; background: #edf3e9; }
+.overdueNotice { color: #a4514a; font-size: 12px; }
 
 .deleteBtn {
   flex-shrink: 0;
+  padding: 7px;
+  border: 0;
+  border-radius: 7px;
+  color: #a2a69e;
   background: transparent;
-  border: none;
   cursor: pointer;
-  font-size: 18px;
-  color: #ffb1bf;
-  padding: 4px;
-  transition: color 0.2s ease, transform 0.2s ease;
+  font-size: 16px;
 }
 
-.deleteBtn:hover {
-  transform: scale(1.1);
-  color: white;
-}
+.deleteBtn:hover { color: #a4514a; background: #fbefed; }
 
 .checkbox {
+  display: grid;
+  flex: 0 0 auto;
   width: 20px;
   height: 20px;
+  margin: 1px 0 0;
   appearance: none;
-  -webkit-appearance: none;
-  border: 2px solid #ff9e7d;
+  place-content: center;
+  border: 1.5px solid #c6ccc0;
   border-radius: 50%;
   cursor: pointer;
-  display: grid;
-  place-content: center;
-  transition: 0.2s;
-  margin-top: 2px;
 }
 
-.checkbox:checked {
-  background: #ff9e7d;
-  border-color: #ff9e7d;
+.checkbox:checked { border-color: #719068; background: #719068; }
+.checkbox:checked::before { color: #fff; content: '✔'; font-size: 11px; }
+
+@media (max-width: 640px) {
+  .app { padding-top: 38px; }
+  .appHeader { align-items: flex-start; margin-bottom: 32px; }
+  .taskCount { gap: 7px; padding: 9px 11px; font-size: 11px; }
+  .taskCount strong { font-size: 16px; }
+  .todoForm { grid-template-columns: 1fr; }
+  .todoDateInput { min-height: 48px; }
+  .primaryBtn { min-height: 50px; }
+  .todoListScroll { max-height: none; }
 }
 
-.checkbox:checked::before {
-  content: "✔";
-  font-size: 12px;
-  color: white;
-}
-
-@media (max-width: 720px) {
-  .app {
-    width: min(100vw - 20px, 1080px);
-    padding: 16px;
-    margin: 10px 0;
-  }
-
-  .appHeader {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .todoForm {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .primaryBtn,
-  .ghostBtn {
-    width: 100%;
-    margin-left: 0;
-  }
-
-  .todoItem {
-    padding: 14px;
-    margin-left: 0;
-  }
-
-  .leftPart {
-    gap: 10px;
-  }
-
-  .text {
-    font-size: 15px;
-  }
-}
-
-@media (max-width: 480px) {
-  .app {
-    width: calc(100vw - 12px);
-    padding: 12px;
-    border-radius: 16px;
-  }
-
-  .todoInput,
-  .todoDateInput {
-    font-size: 14px;
-  }
-
-  .taskMeta {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+@media (max-width: 420px) {
+  .appHeader { flex-direction: column; }
+  .taskCount { align-self: flex-start; }
+  .subtleText { max-width: 280px; font-size: 14px; }
 }

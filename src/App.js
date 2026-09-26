@@ -1,47 +1,38 @@
-import { useState, useEffect } from 'react'
-import { getTodos, saveTodos } from './utils/storage'
+import { useEffect, useState } from 'react'
 import TodoForm from './components/TodoForm'
 import TodoList from './components/TodoList'
 import './App.css'
 
-function App() {
-  const [username, setUsername] = useState('')
-  const [currentUser, setCurrentUser] = useState(null)
-  const [todos, setTodos] = useState([])
+const TODOS_KEY = 'todos'
 
-  useEffect(() => {
+function loadTodos() {
+  try {
+    const savedTodos = localStorage.getItem(TODOS_KEY)
+    if (savedTodos) return JSON.parse(savedTodos)
+
+    // Move existing tasks from the previous per-user format to the new shared list.
     const savedUser = localStorage.getItem('currentUser')
-
     if (savedUser) {
       const user = JSON.parse(savedUser)
-      setCurrentUser(user)
-      setTodos(getTodos(user.username))
+      const legacyTodos = localStorage.getItem(`todos_${user.username}`)
+      if (legacyTodos) {
+        const todos = JSON.parse(legacyTodos)
+        localStorage.setItem(TODOS_KEY, JSON.stringify(todos))
+        return todos
+      }
     }
-  }, [])
+  } catch {
+    // Ignore invalid browser storage and start with an empty list.
+  }
+  return []
+}
+
+function App() {
+  const [todos, setTodos] = useState(loadTodos)
 
   useEffect(() => {
-    if (currentUser) {
-      saveTodos(currentUser.username, todos)
-    }
-  }, [currentUser, todos])
-
-  const handleLogin = () => {
-    if (!username.trim()) return
-
-    const user = { username }
-
-    localStorage.setItem('currentUser', JSON.stringify(user))
-
-    setCurrentUser(user)
-    setTodos(getTodos(username))
-    setUsername('')
-  }
-
-  const logout = () => {
-    localStorage.removeItem('currentUser')
-    setCurrentUser(null)
-    setTodos([])
-  }
+    localStorage.setItem(TODOS_KEY, JSON.stringify(todos))
+  }, [todos])
 
   const addTodo = (text, dueDate) => {
     setTodos(prev => [
@@ -51,63 +42,47 @@ function App() {
   }
 
   const toggleTodo = (id) => {
-    setTodos(prev =>
-      prev.map(todo =>
-        todo.id === id
-          ? { ...todo, done: !todo.done }
-          : todo
-      )
-    )
+    setTodos(prev => prev.map(todo =>
+      todo.id === id ? { ...todo, done: !todo.done } : todo
+    ))
   }
 
   const deleteTodo = (id) => {
     setTodos(prev => prev.filter(todo => todo.id !== id))
   }
 
-  if (!currentUser) {
-    return (
-      <div className="app authCard">
-        <h2>Ласкаво просимо</h2>
-        <p className="subtleText">Увійди, щоб керувати своїм особистим планером</p>
-
-        <input
-          className="todoInput"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Введи ім'я"
-        />
-
-        <button className="primaryBtn" onClick={handleLogin}>
-          Увійти
-        </button>
-      </div>
-    )
-  }
-
-  const activeTodos = todos.filter(t => !t.done)
-  const doneTodos = todos.filter(t => t.done)
+  const activeTodos = todos.filter(todo => !todo.done)
+  const doneTodos = todos.filter(todo => todo.done)
 
   return (
-    <div className="app">
-      <div className="appHeader">
+    <main className="app">
+      <header className="appHeader">
         <div>
-          <p className="eyebrow">Преміальний планер</p>
-          <h1>Todo Luxe</h1>
-          <p className="subtleText">Користувач: {currentUser.username}</p>
+          <p className="eyebrow">Твій простір для планів</p>
+          <h1>Мої завдання<span>.</span></h1>
+          <p className="subtleText">Упорядкуй справи та рухайся вперед крок за кроком.</p>
         </div>
-        <button className="ghostBtn" onClick={logout}>
-          Вийти
-        </button>
-      </div>
+        <div className="taskCount" aria-live="polite">
+          <strong>{activeTodos.length}</strong>
+          <span>{activeTodos.length === 1 ? 'завдання' : 'завдань'} залишилось</span>
+        </div>
+      </header>
 
-      <TodoForm addTodo={addTodo} />
-
-      <TodoList
-        todos={[...activeTodos, ...doneTodos]}
-        toggleTodo={toggleTodo}
-        deleteTodo={deleteTodo}
-      />
-    </div>
+      <section className="content" aria-label="Список завдань">
+        <TodoForm addTodo={addTodo} />
+        {todos.length > 0 && (
+          <div className="listHeading">
+            <h2>Список справ</h2>
+            <span>{todos.length} загалом</span>
+          </div>
+        )}
+        <TodoList
+          todos={[...activeTodos, ...doneTodos]}
+          toggleTodo={toggleTodo}
+          deleteTodo={deleteTodo}
+        />
+      </section>
+    </main>
   )
 }
 
